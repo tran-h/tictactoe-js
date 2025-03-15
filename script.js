@@ -26,11 +26,39 @@ function Gameboard() {
 
     const getBoard = () => board;
 
-    const placeMark = (row, column, player) => {
-        if (board[row][column].getValue() != "") return -1;
+    const checkFullBoard = () => {
+        let fullBoard = true;
+        for (let i = 0; i < rows; i++) {
+            if (!board[i].every(cell => cell.getValue() === 'X' || cell.getValue() === 'O')) {
+                fullBoard = false;
+                break;
+            }
+        }
+        return fullBoard;
+    }
 
-        board[row][column].addMark(player);
-        return 0;
+    const checkWin = () => {
+        //check win conditions and determine winner if possible
+        
+    };
+
+    const placeMark = (row, column, player) => {
+        let validMove = false;
+
+        if (checkFullBoard()) {
+            validMove = false;
+            console.log("Board is full, game is a draw");
+        }
+        else if (board[row][column].getValue() != "") {
+            validMove = false;
+            console.log("Cell is already occupied, please try again.");
+        }
+        else {
+            validMove = true;
+            board[row][column].addMark(player);
+        }
+
+        return validMove;
     };
 
     const printBoard = () => {
@@ -38,7 +66,7 @@ function Gameboard() {
         console.log(boardWithCellValues);
     };
 
-    return { getBoard, placeMark, printBoard };
+    return { getBoard, checkFullBoard, checkWin, placeMark, printBoard };
 }
 
 function GameController() {
@@ -71,14 +99,22 @@ function GameController() {
     const playRound = (row, column) => {
         let result = board.placeMark(row, column, getActivePlayer().mark);
 
-        if (result == 0) {
+        if (result) {
             console.log(`Placing ${getActivePlayer().name}'s mark into row ${row}, column ${column}...`);
-            //check for/handle winning situation here
-            
+
+            if (board.checkWin()) {
+                console.log(`${getActivePlayer().name} wins!`);
+                board.printBoard();
+                return;
+            }
+
             switchPlayerTurn();
         }
-        else {
-            console.log(`Cell is not empty, ${getActivePlayer().name}, please try again.`);
+        
+        if (board.checkFullBoard()) {
+            console.log("It's a draw!");
+            board.printBoard();
+            return;
         }
 
         printNewRound();
