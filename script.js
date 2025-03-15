@@ -38,8 +38,34 @@ function Gameboard() {
     }
 
     const checkWin = () => {
-        //check win conditions and determine winner if possible
-        
+        let win = false;
+
+        for (let row = 0; row < rows; row++) {
+            if (board[row][0].getValue()
+                && board[row][0].getValue() === board[row][1].getValue()
+                && board[row][1].getValue() === board[row][2].getValue()) {
+                win = true;
+            }
+        }
+
+        for (let col = 0; col < columns; col++) {
+            if (board[0][col].getValue()
+                && board[0][col].getValue() === board[1][col].getValue()
+                && board[1][col].getValue() === board[2][col].getValue()) {
+                win = true;
+            }
+        }
+
+        if (board[0][0].getValue()
+            && board[0][0].getValue() === board[1][1].getValue()
+            && board[1][1].getValue() === board[2][2].getValue())
+            win = true;
+        if (board[0][2].getValue()
+            && board[0][2].getValue() === board[1][1].getValue()
+            && board[1][1].getValue() === board[2][0].getValue())
+            win = true;
+
+        return win;
     };
 
     const placeMark = (row, column, player) => {
@@ -110,7 +136,7 @@ function GameController() {
 
             switchPlayerTurn();
         }
-        
+
         if (board.checkFullBoard()) {
             console.log("It's a draw!");
             board.printBoard();
