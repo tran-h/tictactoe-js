@@ -2,3 +2,32 @@
     margin: 0;
     padding: 0;
 }
+
+h1 {
+    margin: 2rem 4rem;
+}
+
+.board {
+    display: grid;
+    height: 500px;
+    width: 500px;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    border: 1px solid black;
+    gap: 2px;
+    margin: 0 4rem;
+}
+
+.cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 8rem;
+    border: 1px solid grey;
+}
+
+.resetBtn {
+    padding: 1rem;
+    margin: 0 4rem;
+}
